@@ -1,0 +1,80 @@
+DROP DATABASE IF EXISTS `library11`;
+CREATE DATABASE  IF NOT EXISTS `library11`;
+USE `library11`;
+
+SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT;
+SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS;
+SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION;
+SET NAMES utf8;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
+SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0; 
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+CREATE TABLE customer
+(
+  c_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  first_name CHAR(50) NOT NULL,
+  last_name CHAR(50) NOT NULL,
+  email CHAR(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO customer VALUES 
+(1,'David','Bush','bushd@gg.com'),
+(2,'John','Doe','johnd@gg.com'),
+(3,'Max','Rao','maxr@gg.com'),
+(4,'Mary','James','maryj@gg.com'),
+(5,'Tony','Lord','tony@gg.com');
+
+CREATE TABLE rental
+(
+  rental_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  issue_date DATE,
+  return_date DATE,
+  customer_id INT,
+  book_id INT,
+  KEY `FK_CUSTOMER_idx` (`customer_id`),
+  CONSTRAINT `FK_CUSTOMER` 
+  FOREIGN KEY (`customer_id`) 
+  REFERENCES `customer` (`c_id`),
+
+  KEY `FK_BOOK_idx` (`book_id`),
+  CONSTRAINT `FK_BOOK` 
+  FOREIGN KEY (`book_id`) 
+  REFERENCES `book` (`b_id`)
+
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+INSERT INTO rental VALUES
+(1,'2018-07-21',null,3,1),
+(2,'2018-07-21',null,5,2);
+
+CREATE TABLE book
+(
+  b_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  author  CHAR(50) NOT NULL,
+  title CHAR(100) NOT NULL,
+  category CHAR(50) NOT NULL,
+  availability CHAR(5) NOT NULL DEFAULT 'yes'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+INSERT INTO book VALUES
+(1,'Doyle','The adventures of binkle and flip','Child','no'),
+(2,'Blyton','The adventures of sherlock holmes','Crime fiction','no'),
+(3,'Rustard','Insects','Science','yes'),
+(4,'Larsson','Man who hate woman','Crime','yes'),
+(5,'Tolkien','Lord of the Rings: The Two Towers','Fantasy','lost');
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT;
+SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS;
+SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION;
+SET SQL_NOTES=@OLD_SQL_NOTES; 
+
+SET FOREIGN_KEY_CHECKS=1;
